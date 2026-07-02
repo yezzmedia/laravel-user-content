@@ -1,5 +1,16 @@
 # Changelog
 
+## v0.1.1 (2026-07-02)
+
+- Register content addons with InstalledAddonRegistry on boot
+- Wire ContentPlugin into HubExtensionRegistry for panel pages
+- Fix EnsureContentStoreReadyInstallStep: `migrationsAllowed` → `allowMigrations`
+- Update ContentAddonRegistrar URL generators to point directly to content pages
+- Add project-context resolution and membership check to ContentBasePage
+- Remove global dashboard navigation in favor of project-scoped addon links
+- Set `$shouldRegisterNavigation = false` on ContentBasePage
+- Add per-project sidebar navigation via DashboardPage
+
 ## v0.1.0 (2026-07-02)
 
 - Initial package scaffold
