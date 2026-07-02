@@ -14,14 +14,15 @@ use Filament\Schemas\SchemasServiceProvider;
 use Filament\Support\SupportServiceProvider;
 use Filament\Tables\TablesServiceProvider;
 use Filament\Widgets\WidgetsServiceProvider;
+use Illuminate\Contracts\Auth\Authenticatable;
 use Livewire\LivewireServiceProvider;
-use Spatie\Honeypot\SpamProtectionServiceProvider;
-use Spatie\LaravelPackageTools\PackageServiceProvider;
-use Spatie\Sluggable\SluggableServiceProvider;
+use Spatie\Honeypot\HoneypotServiceProvider;
 use YezzMedia\Content\ContentServiceProvider;
 use YezzMedia\Dashboard\DashboardServiceProvider;
 use YezzMedia\Foundation\FoundationServiceProvider;
 use YezzMedia\Foundation\Testing\FoundationTestCase;
+use YezzMedia\UserProjects\Models\Project;
+use YezzMedia\UserProjects\Models\ProjectMember;
 use YezzMedia\UserProjects\UserProjectsServiceProvider;
 
 abstract class TestCase extends FoundationTestCase
@@ -29,8 +30,6 @@ abstract class TestCase extends FoundationTestCase
     protected function setUp(): void
     {
         parent::setUp();
-
-        $this->withoutVite();
     }
 
     protected function defineEnvironment($app): void
@@ -38,6 +37,8 @@ abstract class TestCase extends FoundationTestCase
         parent::defineEnvironment($app);
 
         $app['config']->set('app.key', 'base64:'.base64_encode(random_bytes(32)));
+        $app['config']->set('app.env', 'local');
+        $app['config']->set('auth.providers.users.model', TestUser::class);
         $app['config']->set('database.default', 'testing');
         $app['config']->set('database.connections.testing', [
             'driver' => 'sqlite',
@@ -50,6 +51,7 @@ abstract class TestCase extends FoundationTestCase
     {
         $this->loadLaravelMigrations();
         $this->loadMigrationsFrom(__DIR__.'/../database/migrations');
+        $this->loadMigrationsFrom(dirname(__DIR__).'/../laravel-user-projects/database/migrations');
     }
 
     protected function getPackageProviders($app): array
@@ -66,12 +68,38 @@ abstract class TestCase extends FoundationTestCase
             NotificationsServiceProvider::class,
             BladeIconsServiceProvider::class,
             BladeHeroiconsServiceProvider::class,
-            SluggableServiceProvider::class,
-            SpamProtectionServiceProvider::class,
+            HoneypotServiceProvider::class,
             FoundationServiceProvider::class,
             DashboardServiceProvider::class,
             UserProjectsServiceProvider::class,
             ContentServiceProvider::class,
         ];
+    }
+
+    protected function createUser(): Authenticatable
+    {
+        $userClass = config('auth.providers.users.model');
+
+        $user = $userClass::forceCreate([
+            'name' => fake()->name(),
+            'email' => fake()->unique()->safeEmail(),
+            'password' => bcrypt('password'),
+        ]);
+
+        $this->actingAs($user, 'web');
+
+        return $user;
+    }
+
+    protected function createProject(): Project
+    {
+        $user = $this->createUser();
+
+        return Project::query()->create([
+            'owner_id' => $user->getAuthIdentifier(),
+            'name' => 'Test Project',
+            'description' => 'A test project',
+            'status' => 'active',
+        ]);
     }
 }

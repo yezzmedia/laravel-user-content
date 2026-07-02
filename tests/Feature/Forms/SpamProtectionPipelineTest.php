@@ -7,7 +7,7 @@ use YezzMedia\Content\Pipelines\SpamProtectionPipeline;
 use YezzMedia\UserProjects\Models\Project;
 
 it('passes clean submissions', function () {
-    $project = Project::factory()->create();
+    $project = $this->createProject();
     $form = FormDefinition::create([
         'project_id' => $project->id,
         'name' => 'Test',
@@ -21,7 +21,7 @@ it('passes clean submissions', function () {
 });
 
 it('detects honeypot filled', function () {
-    $project = Project::factory()->create();
+    $project = $this->createProject();
     $form = FormDefinition::create([
         'project_id' => $project->id,
         'name' => 'Test',
@@ -38,7 +38,7 @@ it('detects honeypot filled', function () {
 });
 
 it('skips honeypot when disabled', function () {
-    $project = Project::factory()->create();
+    $project = $this->createProject();
     $form = FormDefinition::create([
         'project_id' => $project->id,
         'name' => 'Test',

@@ -10,6 +10,7 @@ use Spatie\LaravelPackageTools\PackageServiceProvider;
 use YezzMedia\Content\Events\PagePublished;
 use YezzMedia\Content\Events\PageSlugChanged;
 use YezzMedia\Content\Events\PageUnpublished;
+use YezzMedia\Content\Filament\ContentPlugin;
 use YezzMedia\Content\Listeners\ContentAuditListener;
 use YezzMedia\Content\Listeners\CreateRedirectOnSlugChange;
 use YezzMedia\Content\Support\ContentAddonRegistrar;
@@ -18,7 +19,10 @@ use YezzMedia\Content\Support\FormService;
 use YezzMedia\Content\Support\NavigationManager;
 use YezzMedia\Content\Support\PageService;
 use YezzMedia\Content\Support\RedirectManager;
+use YezzMedia\Dashboard\Support\HubExtensionRegistry;
 use YezzMedia\Foundation\Support\PlatformPackageRegistrar;
+use YezzMedia\UserProjects\Support\InstalledAddonRegistry;
+use YezzMedia\UserProjects\Support\ProjectAddonManager;
 
 class ContentServiceProvider extends PackageServiceProvider
 {
@@ -44,6 +48,11 @@ class ContentServiceProvider extends PackageServiceProvider
         $this->app->singleton(RedirectManager::class);
         $this->app->singleton(FormService::class);
         $this->app->singleton(ContentStoreSetup::class);
+
+        if (class_exists(HubExtensionRegistry::class)) {
+            $this->app->make(HubExtensionRegistry::class)
+                ->register(ContentPlugin::class);
+        }
     }
 
     public function packageBooted(): void
@@ -53,15 +62,16 @@ class ContentServiceProvider extends PackageServiceProvider
 
         $this->registerEventListeners($this->app->make(Dispatcher::class));
         $this->registerProjectAddons();
+        $this->registerInstalledAddons();
     }
 
     private function registerProjectAddons(): void
     {
-        if (! class_exists(\YezzMedia\UserProjects\Support\ProjectAddonManager::class)) {
+        if (! class_exists(ProjectAddonManager::class)) {
             return;
         }
 
-        $manager = $this->app->make(\YezzMedia\UserProjects\Support\ProjectAddonManager::class);
+        $manager = $this->app->make(ProjectAddonManager::class);
 
         (new ContentAddonRegistrar)->register($manager);
     }
@@ -87,5 +97,22 @@ class ContentServiceProvider extends PackageServiceProvider
             PageSlugChanged::class,
             [ContentAuditListener::class, 'handlePageSlugChanged'],
         );
+    }
+
+    private function registerInstalledAddons(): void
+    {
+        if (! class_exists(InstalledAddonRegistry::class)) {
+            return;
+        }
+
+        try {
+            $registry = $this->app->make(InstalledAddonRegistry::class);
+            $registry->register('content.pages', 'Pages', '1.0.0', 'Manage website pages, content, and publication status.');
+            $registry->register('content.navigation', 'Navigation', '1.0.0', 'Manage header and footer menu links.');
+            $registry->register('content.redirects', 'Redirects', '1.0.0', 'Manage URL redirect rules.');
+            $registry->register('content.forms', 'Forms', '1.0.0', 'Manage form definitions and view submissions.');
+        } catch (\Throwable) {
+            // Silently skip when the installed_addons table does not exist yet.
+        }
     }
 }

@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace YezzMedia\Content\Install;
 
 use YezzMedia\Content\Support\ContentStoreSetup;
-use YezzMedia\Foundation\Install\InstallContext;
+use YezzMedia\Foundation\Data\InstallContext;
 use YezzMedia\Foundation\Install\InstallStep;
 
 final class PublishContentMigrationsInstallStep implements InstallStep

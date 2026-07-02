@@ -7,7 +7,7 @@ use YezzMedia\Content\Models\Page;
 use YezzMedia\UserProjects\Models\Project;
 
 it('creates a page', function () {
-    $project = Project::factory()->create();
+    $project = $this->createProject();
 
     $page = Page::create([
         'project_id' => $project->id,
@@ -22,8 +22,8 @@ it('creates a page', function () {
 });
 
 it('generates unique slug per project', function () {
-    $project = Project::factory()->create();
-    $other = Project::factory()->create();
+    $project = $this->createProject();
+    $other = $this->createProject();
 
     Page::create(['project_id' => $project->id, 'title' => 'Same Title']);
     Page::create(['project_id' => $other->id, 'title' => 'Same Title']);
@@ -35,8 +35,8 @@ it('generates unique slug per project', function () {
 });
 
 it('scopes pages by project', function () {
-    $projectA = Project::factory()->create();
-    $projectB = Project::factory()->create();
+    $projectA = $this->createProject();
+    $projectB = $this->createProject();
 
     Page::create(['project_id' => $projectA->id, 'title' => 'Page A']);
     Page::create(['project_id' => $projectB->id, 'title' => 'Page B']);
@@ -46,7 +46,7 @@ it('scopes pages by project', function () {
 });
 
 it('scopes published pages', function () {
-    $project = Project::factory()->create();
+    $project = $this->createProject();
 
     $draft = Page::create(['project_id' => $project->id, 'title' => 'Draft']);
     $published = Page::create(['project_id' => $project->id, 'title' => 'Published']);
@@ -57,7 +57,7 @@ it('scopes published pages', function () {
 });
 
 it('scopes pages in navigation', function () {
-    $project = Project::factory()->create();
+    $project = $this->createProject();
 
     $visible = Page::create(['project_id' => $project->id, 'title' => 'Visible', 'show_in_navigation' => true]);
     $visible->publish();
@@ -68,7 +68,7 @@ it('scopes pages in navigation', function () {
 });
 
 it('publishes and unpublishes', function () {
-    $project = Project::factory()->create();
+    $project = $this->createProject();
     $page = Page::create(['project_id' => $project->id, 'title' => 'Test']);
 
     expect($page->isDraft())->toBeTrue();
@@ -83,7 +83,7 @@ it('publishes and unpublishes', function () {
 });
 
 it('finds page by slug', function () {
-    $project = Project::factory()->create();
+    $project = $this->createProject();
     Page::create(['project_id' => $project->id, 'title' => 'My Page']);
 
     $found = Page::findBySlug('my-page', $project->id);
@@ -92,7 +92,7 @@ it('finds page by slug', function () {
 });
 
 it('handles parent-child relationships', function () {
-    $project = Project::factory()->create();
+    $project = $this->createProject();
     $parent = Page::create(['project_id' => $project->id, 'title' => 'Parent']);
     $child = Page::create(['project_id' => $project->id, 'title' => 'Child', 'parent_id' => $parent->id]);
 

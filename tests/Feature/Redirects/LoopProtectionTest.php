@@ -7,7 +7,7 @@ use YezzMedia\Content\Models\Redirect;
 use YezzMedia\UserProjects\Models\Project;
 
 it('rejects self-referential redirect', function () {
-    $project = Project::factory()->create();
+    $project = $this->createProject();
 
     $result = app(ProtectAgainstRedirectLoopsAction::class)->execute('/same', '/same', $project->id);
 
@@ -15,7 +15,7 @@ it('rejects self-referential redirect', function () {
 });
 
 it('passes when no chain exists', function () {
-    $project = Project::factory()->create();
+    $project = $this->createProject();
 
     $result = app(ProtectAgainstRedirectLoopsAction::class)->execute('/a', '/b', $project->id);
 
@@ -23,7 +23,7 @@ it('passes when no chain exists', function () {
 });
 
 it('detects direct loop', function () {
-    $project = Project::factory()->create();
+    $project = $this->createProject();
     Redirect::create(['project_id' => $project->id, 'source' => '/b', 'target' => '/a']);
 
     $result = app(ProtectAgainstRedirectLoopsAction::class)->execute('/a', '/b', $project->id);
@@ -32,7 +32,7 @@ it('detects direct loop', function () {
 });
 
 it('detects indirect loop', function () {
-    $project = Project::factory()->create();
+    $project = $this->createProject();
     Redirect::create(['project_id' => $project->id, 'source' => '/b', 'target' => '/c']);
     Redirect::create(['project_id' => $project->id, 'source' => '/c', 'target' => '/d']);
     Redirect::create(['project_id' => $project->id, 'source' => '/d', 'target' => '/a']);

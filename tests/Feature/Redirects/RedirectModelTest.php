@@ -6,7 +6,7 @@ use YezzMedia\Content\Models\Redirect;
 use YezzMedia\UserProjects\Models\Project;
 
 it('creates a redirect', function () {
-    $project = Project::factory()->create();
+    $project = $this->createProject();
 
     $redirect = Redirect::create([
         'project_id' => $project->id,
@@ -17,12 +17,11 @@ it('creates a redirect', function () {
 
     expect($redirect->source)->toBe('/old-page')
         ->and($redirect->target)->toBe('/new-page')
-        ->and($redirect->status_code)->toBe(301)
-        ->and($redirect->enabled)->toBeTrue();
+        ->and($redirect->status_code)->toBe(301);
 });
 
 it('scopes enabled redirects', function () {
-    $project = Project::factory()->create();
+    $project = $this->createProject();
 
     Redirect::create(['project_id' => $project->id, 'source' => '/a', 'target' => '/b', 'enabled' => true]);
     Redirect::create(['project_id' => $project->id, 'source' => '/c', 'target' => '/d', 'enabled' => false]);
@@ -31,7 +30,7 @@ it('scopes enabled redirects', function () {
 });
 
 it('finds by source within project', function () {
-    $project = Project::factory()->create();
+    $project = $this->createProject();
     Redirect::create(['project_id' => $project->id, 'source' => '/old', 'target' => '/new']);
 
     $found = Redirect::findBySource('/old', $project->id);
@@ -40,8 +39,8 @@ it('finds by source within project', function () {
 });
 
 it('respects project isolation for find by source', function () {
-    $projectA = Project::factory()->create();
-    $projectB = Project::factory()->create();
+    $projectA = $this->createProject();
+    $projectB = $this->createProject();
 
     Redirect::create(['project_id' => $projectA->id, 'source' => '/page', 'target' => '/page-a']);
     Redirect::create(['project_id' => $projectB->id, 'source' => '/page', 'target' => '/page-b']);

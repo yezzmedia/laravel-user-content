@@ -7,7 +7,7 @@ use YezzMedia\Content\Support\FormService;
 use YezzMedia\UserProjects\Models\Project;
 
 it('validates required fields', function () {
-    $project = Project::factory()->create();
+    $project = $this->createProject();
     $form = FormDefinition::create([
         'project_id' => $project->id,
         'name' => 'Test',
@@ -24,7 +24,7 @@ it('validates required fields', function () {
 })->throwsNoExceptions();
 
 it('fails validation when required field missing', function () {
-    $project = Project::factory()->create();
+    $project = $this->createProject();
     $form = FormDefinition::create([
         'project_id' => $project->id,
         'name' => 'Test',
@@ -37,7 +37,7 @@ it('fails validation when required field missing', function () {
 })->throws(\Illuminate\Validation\ValidationException::class);
 
 it('validates email fields', function () {
-    $project = Project::factory()->create();
+    $project = $this->createProject();
     $form = FormDefinition::create([
         'project_id' => $project->id,
         'name' => 'Test',
@@ -50,7 +50,7 @@ it('validates email fields', function () {
 })->throws(\Illuminate\Validation\ValidationException::class);
 
 it('validates select fields against options', function () {
-    $project = Project::factory()->create();
+    $project = $this->createProject();
     $form = FormDefinition::create([
         'project_id' => $project->id,
         'name' => 'Test',

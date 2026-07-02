@@ -7,7 +7,7 @@ use YezzMedia\Content\Models\FormSubmission;
 use YezzMedia\UserProjects\Models\Project;
 
 it('stores a submission', function () {
-    $project = Project::factory()->create();
+    $project = $this->createProject();
     $form = FormDefinition::create([
         'project_id' => $project->id,
         'name' => 'Contact',
@@ -28,7 +28,7 @@ it('stores a submission', function () {
 });
 
 it('marks submission as spam', function () {
-    $project = Project::factory()->create();
+    $project = $this->createProject();
     $form = FormDefinition::create([
         'project_id' => $project->id,
         'name' => 'Contact',
@@ -45,7 +45,7 @@ it('marks submission as spam', function () {
 });
 
 it('belongs to form definition', function () {
-    $project = Project::factory()->create();
+    $project = $this->createProject();
     $form = FormDefinition::create([
         'project_id' => $project->id,
         'name' => 'Contact',

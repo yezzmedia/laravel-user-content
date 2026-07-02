@@ -7,7 +7,7 @@ namespace YezzMedia\Content\Doctor;
 use Throwable;
 use YezzMedia\Content\Support\ContentStoreSetup;
 use YezzMedia\Foundation\Doctor\DoctorCheck;
-use YezzMedia\Foundation\Doctor\DoctorResult;
+use YezzMedia\Foundation\Data\DoctorResult;
 
 final readonly class ContentStoreReadyCheck implements DoctorCheck
 {
