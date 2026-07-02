@@ -16,7 +16,7 @@ class ContentAddonRegistrar
             label: 'Pages',
             icon: 'document-text',
             description: 'Manage website pages, content, and publication status.',
-            urlGenerator: fn ($project) => url('/hub/projects?project='.$project->id.'&tab=pages'),
+            urlGenerator: fn ($project) => url('/hub/content/pages?project='.$project->id),
             sort: 20,
         ));
 
@@ -25,7 +25,7 @@ class ContentAddonRegistrar
             label: 'Navigation',
             icon: 'bars-3',
             description: 'Manage header and footer menu links.',
-            urlGenerator: fn ($project) => url('/hub/projects?project='.$project->id.'&tab=navigation'),
+            urlGenerator: fn ($project) => url('/hub/content/navigation?project='.$project->id),
             sort: 30,
         ));
 
@@ -34,7 +34,7 @@ class ContentAddonRegistrar
             label: 'Redirects',
             icon: 'arrow-right-on-rectangle',
             description: 'Manage URL redirect rules.',
-            urlGenerator: fn ($project) => url('/hub/projects?project='.$project->id.'&tab=redirects'),
+            urlGenerator: fn ($project) => url('/hub/content/redirects?project='.$project->id),
             sort: 40,
         ));
 
@@ -43,7 +43,7 @@ class ContentAddonRegistrar
             label: 'Forms',
             icon: 'clipboard-document-list',
             description: 'Manage form definitions and view submissions.',
-            urlGenerator: fn ($project) => url('/hub/projects?project='.$project->id.'&tab=forms'),
+            urlGenerator: fn ($project) => url('/hub/content/forms?project='.$project->id),
             sort: 50,
         ));
     }

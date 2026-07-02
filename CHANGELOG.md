@@ -1,6 +1,6 @@
 # Changelog
 
-## v0.1.0 (unreleased)
+## v0.1.0 (2026-07-02)
 
 - Initial package scaffold
 - Pages module with slug generation, publication workflow, and navigation support
@@ -8,3 +8,4 @@
 - Redirects module with exact-match resolution, loop protection, and slug-change integration
 - Forms module with field definitions, submission storage, honeypot spam protection, rate limiting, and mail delivery
 - Platform package registration with install steps, doctor checks, and permissions
+- 58 tests, 146 assertions

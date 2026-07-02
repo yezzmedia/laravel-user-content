@@ -6,7 +6,7 @@ use YezzMedia\Content\Models\FormDefinition;
 use YezzMedia\UserProjects\Models\Project;
 
 it('creates a form definition', function () {
-    $project = Project::factory()->create();
+    $project = $this->createProject();
 
     $form = FormDefinition::create([
         'project_id' => $project->id,
@@ -28,7 +28,7 @@ it('creates a form definition', function () {
 });
 
 it('returns field list', function () {
-    $project = Project::factory()->create();
+    $project = $this->createProject();
 
     $form = FormDefinition::create([
         'project_id' => $project->id,
@@ -43,7 +43,7 @@ it('returns field list', function () {
 });
 
 it('returns default option values', function () {
-    $project = Project::factory()->create();
+    $project = $this->createProject();
 
     $form = FormDefinition::create([
         'project_id' => $project->id,

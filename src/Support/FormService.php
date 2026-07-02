@@ -43,16 +43,16 @@ class FormService
                 $fieldRules[] = 'nullable';
             }
 
-            $fieldRules[] = match ($field['type'] ?? 'text') {
-                'email' => 'email:filter',
-                'tel' => 'string|max:50',
-                'textarea' => 'string|max:5000',
-                'select', 'radio' => 'string|in:'.implode(',', $field['options'] ?? []),
-                'checkbox' => 'boolean',
-                default => 'string|max:1000',
+            $typeRules = match ($field['type'] ?? 'text') {
+                'email' => ['email:filter'],
+                'tel' => ['string', 'max:50'],
+                'textarea' => ['string', 'max:5000'],
+                'select', 'radio' => ['string', 'in:'.implode(',', $field['options'] ?? [])],
+                'checkbox' => ['boolean'],
+                default => ['string', 'max:1000'],
             };
 
-            $rules[$field['key']] = $fieldRules;
+            $rules[$field['key']] = array_merge($fieldRules, $typeRules);
         }
 
         return $rules;

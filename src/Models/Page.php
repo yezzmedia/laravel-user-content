@@ -17,6 +17,12 @@ class Page extends Model
 {
     use HasSlug;
 
+    protected $attributes = [
+        'status' => 'draft',
+        'show_in_navigation' => true,
+        'sort_order' => 0,
+    ];
+
     protected $fillable = [
         'project_id',
         'title',
@@ -47,7 +53,8 @@ class Page extends Model
             ->generateSlugsFrom('title')
             ->saveSlugsTo('slug')
             ->slugsShouldBeNoLongerThan(255)
-            ->doNotGenerateSlugsOnUpdate();
+            ->doNotGenerateSlugsOnUpdate()
+            ->extraScope(fn ($query) => $query->where('project_id', $this->project_id));
     }
 
     public function project(): BelongsTo

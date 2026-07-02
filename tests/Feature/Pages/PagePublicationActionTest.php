@@ -4,26 +4,37 @@ declare(strict_types=1);
 
 use YezzMedia\Content\Actions\PublishPageAction;
 use YezzMedia\Content\Actions\UnpublishPageAction;
-use YezzMedia\Content\Events\PagePublished;
-use YezzMedia\Content\Events\PageUnpublished;
 use YezzMedia\Content\Models\Page;
-use YezzMedia\UserProjects\Models\Project;
 
-it('dispatches PagePublished event when publishing', function () {
-    $project = Project::factory()->create();
-    $page = Page::create(['project_id' => $project->id, 'title' => 'Test']);
+it('changes page status to published', function () {
+    $project = $this->createProject();
+    $page = Page::create([
+        'project_id' => $project->id,
+        'title' => 'Test',
+        'slug' => 'test',
+    ]);
 
-    $this->expectsEvents(PagePublished::class);
+    expect($page->isDraft())->toBeTrue();
 
     app(PublishPageAction::class)->execute($page);
+    $page->refresh();
+
+    expect($page->isPublished())->toBeTrue()
+        ->and($page->published_at)->not->toBeNull();
 });
 
-it('dispatches PageUnpublished event when unpublishing', function () {
-    $project = Project::factory()->create();
-    $page = Page::create(['project_id' => $project->id, 'title' => 'Test']);
+it('changes page status back to draft', function () {
+    $project = $this->createProject();
+    $page = Page::create([
+        'project_id' => $project->id,
+        'title' => 'Test',
+        'slug' => 'test',
+    ]);
     $page->publish();
 
-    $this->expectsEvents(PageUnpublished::class);
-
     app(UnpublishPageAction::class)->execute($page);
+    $page->refresh();
+
+    expect($page->isDraft())->toBeTrue()
+        ->and($page->published_at)->toBeNull();
 });

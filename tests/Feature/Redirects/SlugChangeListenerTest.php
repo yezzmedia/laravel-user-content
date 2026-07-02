@@ -8,7 +8,7 @@ use YezzMedia\Content\Models\Redirect;
 use YezzMedia\UserProjects\Models\Project;
 
 it('creates redirect on slug change', function () {
-    $project = Project::factory()->create();
+    $project = $this->createProject();
     $event = new PageSlugChanged(
         projectId: $project->id,
         pageId: 1,
@@ -26,7 +26,7 @@ it('creates redirect on slug change', function () {
 });
 
 it('updates existing redirect when slug changes again', function () {
-    $project = Project::factory()->create();
+    $project = $this->createProject();
 
     Redirect::create([
         'project_id' => $project->id,

@@ -7,7 +7,7 @@ use YezzMedia\Content\Models\Page;
 use YezzMedia\UserProjects\Models\Project;
 
 it('builds breadcrumbs for root page', function () {
-    $project = Project::factory()->create();
+    $project = $this->createProject();
     $page = Page::create(['project_id' => $project->id, 'title' => 'About']);
 
     $crumbs = app(BreadcrumbBuilder::class)->build($project, $page);
@@ -18,7 +18,7 @@ it('builds breadcrumbs for root page', function () {
 });
 
 it('builds breadcrumbs for child page', function () {
-    $project = Project::factory()->create();
+    $project = $this->createProject();
     $parent = Page::create(['project_id' => $project->id, 'title' => 'Services']);
     $child = Page::create(['project_id' => $project->id, 'title' => 'Web Design', 'parent_id' => $parent->id]);
 
@@ -31,7 +31,7 @@ it('builds breadcrumbs for child page', function () {
 });
 
 it('returns only project when no current page', function () {
-    $project = Project::factory()->create();
+    $project = $this->createProject();
 
     $crumbs = app(BreadcrumbBuilder::class)->build($project, null);
 

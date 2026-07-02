@@ -6,7 +6,7 @@ namespace YezzMedia\Content\Install;
 
 use Illuminate\Support\Facades\Artisan;
 use YezzMedia\Content\Support\ContentStoreSetup;
-use YezzMedia\Foundation\Install\InstallContext;
+use YezzMedia\Foundation\Data\InstallContext;
 use YezzMedia\Foundation\Install\InstallStep;
 
 final class EnsureContentStoreReadyInstallStep implements InstallStep
@@ -35,7 +35,7 @@ final class EnsureContentStoreReadyInstallStep implements InstallStep
 
     public function handle(InstallContext $context): void
     {
-        if ($context->migrationsAllowed) {
+        if ($context->allowMigrations) {
             Artisan::call('migrate', ['--force' => true]);
         }
 
