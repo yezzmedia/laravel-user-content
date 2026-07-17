@@ -8,6 +8,8 @@ use YezzMedia\Content\Models\Redirect;
 
 class RedirectsOverviewPage extends ContentBasePage
 {
+    protected string $view = 'user-content::pages.redirects-overview';
+
     protected static ?string $slug = 'content/redirects';
 
     protected function getPageTitle(): string
@@ -22,15 +24,13 @@ class RedirectsOverviewPage extends ContentBasePage
 
     protected function pageData(): array
     {
-        $projectId = request()->query('project');
-
-        if ($projectId === null) {
+        if ($this->projectId === null) {
             return ['redirects' => []];
         }
 
         return [
             'redirects' => Redirect::query()
-                ->forProject((int) $projectId)
+                ->forProject($this->projectId)
                 ->orderBy('source')
                 ->get(),
         ];

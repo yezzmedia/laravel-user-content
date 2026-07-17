@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace YezzMedia\Content\Pages;
 
+use Livewire\Attributes\Url;
 use YezzMedia\Dashboard\Pages\DashboardPage;
 use YezzMedia\UserProjects\Models\Project;
 
@@ -11,9 +12,10 @@ abstract class ContentBasePage extends DashboardPage
 {
     protected static bool $shouldRegisterNavigation = false;
 
-    protected ?Project $project = null;
+    #[Url(as: 'project')]
+    public ?int $projectId = null;
 
-    protected ?int $projectId = null;
+    protected ?Project $project = null;
 
     public static function canAccess(): bool
     {
@@ -28,23 +30,26 @@ abstract class ContentBasePage extends DashboardPage
 
     protected function resolveProject(): void
     {
-        $projectId = request()->query('project');
-
-        if ($projectId === null) {
+        if ($this->projectId === null) {
             return;
         }
 
         $user = auth(config('user-projects.panel.guard', 'web'))->user();
 
         if ($user === null) {
+            $this->projectId = null;
+
             return;
         }
 
-        $this->projectId = (int) $projectId;
         $this->project = Project::query()
             ->where('id', $this->projectId)
             ->whereHas('members', fn ($q) => $q->where('user_id', $user->id))
             ->first();
+
+        if ($this->project === null) {
+            $this->projectId = null;
+        }
     }
 
     protected function getViewData(): array

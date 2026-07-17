@@ -12,39 +12,34 @@ class ContentAddonRegistrar
     public function register(ProjectAddonManager $manager): void
     {
         $manager->register(new ProjectAddon(
-            key: 'content.pages',
-            label: 'Pages',
-            icon: 'document-text',
-            description: 'Manage website pages, content, and publication status.',
+            key: 'content',
+            label: 'Content',
+            icon: 'puzzle-piece',
+            description: 'Manage pages, navigation links, redirects, and forms for this project.',
             urlGenerator: fn ($project) => url('/hub/content/pages?project='.$project->id),
             sort: 20,
-        ));
-
-        $manager->register(new ProjectAddon(
-            key: 'content.navigation',
-            label: 'Navigation',
-            icon: 'bars-3',
-            description: 'Manage header and footer menu links.',
-            urlGenerator: fn ($project) => url('/hub/content/navigation?project='.$project->id),
-            sort: 30,
-        ));
-
-        $manager->register(new ProjectAddon(
-            key: 'content.redirects',
-            label: 'Redirects',
-            icon: 'arrow-right-on-rectangle',
-            description: 'Manage URL redirect rules.',
-            urlGenerator: fn ($project) => url('/hub/content/redirects?project='.$project->id),
-            sort: 40,
-        ));
-
-        $manager->register(new ProjectAddon(
-            key: 'content.forms',
-            label: 'Forms',
-            icon: 'clipboard-document-list',
-            description: 'Manage form definitions and view submissions.',
-            urlGenerator: fn ($project) => url('/hub/content/forms?project='.$project->id),
-            sort: 50,
+            subItems: [
+                [
+                    'label' => 'Pages',
+                    'icon' => 'document-text',
+                    'urlGenerator' => fn ($project) => url('/hub/content/pages?project='.$project->id),
+                ],
+                [
+                    'label' => 'Navigation',
+                    'icon' => 'bars-3',
+                    'urlGenerator' => fn ($project) => url('/hub/content/navigation?project='.$project->id),
+                ],
+                [
+                    'label' => 'Redirects',
+                    'icon' => 'arrow-right-on-rectangle',
+                    'urlGenerator' => fn ($project) => url('/hub/content/redirects?project='.$project->id),
+                ],
+                [
+                    'label' => 'Forms',
+                    'icon' => 'clipboard-document-list',
+                    'urlGenerator' => fn ($project) => url('/hub/content/forms?project='.$project->id),
+                ],
+            ],
         ));
     }
 }
