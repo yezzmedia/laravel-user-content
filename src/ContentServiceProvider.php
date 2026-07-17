@@ -5,14 +5,17 @@ declare(strict_types=1);
 namespace YezzMedia\Content;
 
 use Illuminate\Contracts\Events\Dispatcher;
+use Illuminate\Support\Facades\Route;
 use Spatie\LaravelPackageTools\Package;
 use Spatie\LaravelPackageTools\PackageServiceProvider;
 use YezzMedia\Content\Events\PagePublished;
 use YezzMedia\Content\Events\PageSlugChanged;
 use YezzMedia\Content\Events\PageUnpublished;
 use YezzMedia\Content\Filament\ContentPlugin;
+use YezzMedia\Content\Http\Controllers\PageController;
 use YezzMedia\Content\Listeners\ContentAuditListener;
 use YezzMedia\Content\Listeners\CreateRedirectOnSlugChange;
+use YezzMedia\Content\Routing\PageUrlResolver;
 use YezzMedia\Content\Support\ContentAddonRegistrar;
 use YezzMedia\Content\Support\ContentStoreSetup;
 use YezzMedia\Content\Support\FormService;
@@ -48,6 +51,8 @@ class ContentServiceProvider extends PackageServiceProvider
         $this->app->singleton(RedirectManager::class);
         $this->app->singleton(FormService::class);
         $this->app->singleton(ContentStoreSetup::class);
+        $this->app->singleton(PageUrlResolver::class);
+        $this->app->singleton(PageController::class);
 
         if (class_exists(HubExtensionRegistry::class)) {
             $this->app->make(HubExtensionRegistry::class)
@@ -63,6 +68,7 @@ class ContentServiceProvider extends PackageServiceProvider
         $this->registerEventListeners($this->app->make(Dispatcher::class));
         $this->registerProjectAddons();
         $this->registerInstalledAddons();
+        $this->registerFrontendRoutes();
     }
 
     private function registerProjectAddons(): void
@@ -107,12 +113,16 @@ class ContentServiceProvider extends PackageServiceProvider
 
         try {
             $registry = $this->app->make(InstalledAddonRegistry::class);
-            $registry->register('content.pages', 'Pages', '1.0.0', 'Manage website pages, content, and publication status.');
-            $registry->register('content.navigation', 'Navigation', '1.0.0', 'Manage header and footer menu links.');
-            $registry->register('content.redirects', 'Redirects', '1.0.0', 'Manage URL redirect rules.');
-            $registry->register('content.forms', 'Forms', '1.0.0', 'Manage form definitions and view submissions.');
+            $registry->register('content', 'Content', '1.0.0', 'Manage pages, navigation links, redirects, and forms.');
         } catch (\Throwable) {
             // Silently skip when the installed_addons table does not exist yet.
         }
+    }
+
+    private function registerFrontendRoutes(): void
+    {
+        $this->app->booted(function (): void {
+            Route::fallback([PageController::class, 'show']);
+        });
     }
 }

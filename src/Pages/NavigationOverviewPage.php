@@ -8,6 +8,8 @@ use YezzMedia\Content\Models\NavigationLink;
 
 class NavigationOverviewPage extends ContentBasePage
 {
+    protected string $view = 'user-content::pages.navigation-overview';
+
     protected static ?string $slug = 'content/navigation';
 
     protected function getPageTitle(): string
@@ -22,15 +24,13 @@ class NavigationOverviewPage extends ContentBasePage
 
     protected function pageData(): array
     {
-        $projectId = request()->query('project');
-
-        if ($projectId === null) {
+        if ($this->projectId === null) {
             return ['links' => []];
         }
 
         return [
             'links' => NavigationLink::query()
-                ->forProject((int) $projectId)
+                ->forProject($this->projectId)
                 ->orderBy('section')
                 ->orderBy('sort_order')
                 ->get(),
