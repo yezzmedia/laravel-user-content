@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
+use Illuminate\Validation\ValidationException;
 use YezzMedia\Content\Models\FormDefinition;
 use YezzMedia\Content\Support\FormService;
-use YezzMedia\UserProjects\Models\Project;
 
 it('validates required fields', function () {
     $project = $this->createProject();
@@ -34,7 +34,7 @@ it('fails validation when required field missing', function () {
     ]);
 
     app(FormService::class)->validate(['name' => ''], $form);
-})->throws(\Illuminate\Validation\ValidationException::class);
+})->throws(ValidationException::class);
 
 it('validates email fields', function () {
     $project = $this->createProject();
@@ -47,7 +47,7 @@ it('validates email fields', function () {
     ]);
 
     app(FormService::class)->validate(['email' => 'not-an-email'], $form);
-})->throws(\Illuminate\Validation\ValidationException::class);
+})->throws(ValidationException::class);
 
 it('validates select fields against options', function () {
     $project = $this->createProject();
@@ -60,4 +60,4 @@ it('validates select fields against options', function () {
     ]);
 
     app(FormService::class)->validate(['dept' => 'Invalid'], $form);
-})->throws(\Illuminate\Validation\ValidationException::class);
+})->throws(ValidationException::class);

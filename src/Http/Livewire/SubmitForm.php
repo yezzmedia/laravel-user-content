@@ -4,19 +4,25 @@ declare(strict_types=1);
 
 namespace YezzMedia\Content\Http\Livewire;
 
+use Illuminate\Validation\ValidationException;
 use Illuminate\View\View;
 use Livewire\Component;
 use YezzMedia\Content\Actions\DeliverSubmissionAction;
 use YezzMedia\Content\Actions\StoreSubmissionAction;
 use YezzMedia\Content\Models\FormDefinition;
 use YezzMedia\Content\Pipelines\SpamProtectionPipeline;
+use YezzMedia\Content\Support\FormService;
 
 class SubmitForm extends Component
 {
     public FormDefinition $form;
+
     public array $fieldValues = [];
+
     public bool $success = false;
+
     public ?string $error = null;
+
     public array $fieldErrors = [];
 
     public function mount(FormDefinition $form): void
@@ -34,9 +40,9 @@ class SubmitForm extends Component
         $this->fieldErrors = [];
 
         try {
-            $validated = app(\YezzMedia\Content\Support\FormService::class)
+            $validated = app(FormService::class)
                 ->validate($this->fieldValues, $this->form);
-        } catch (\Illuminate\Validation\ValidationException $e) {
+        } catch (ValidationException $e) {
             $this->fieldErrors = $e->errors();
 
             return;

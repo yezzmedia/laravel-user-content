@@ -5,7 +5,6 @@ declare(strict_types=1);
 use YezzMedia\Content\Models\NavigationLink;
 use YezzMedia\Content\Models\Page;
 use YezzMedia\Content\Support\NavigationManager;
-use YezzMedia\UserProjects\Models\Project;
 
 it('builds menu from pages and links', function () {
     $project = $this->createProject();

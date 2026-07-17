@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 use YezzMedia\Content\Models\FormDefinition;
 use YezzMedia\Content\Pipelines\SpamProtectionPipeline;
-use YezzMedia\UserProjects\Models\Project;
 
 it('passes clean submissions', function () {
     $project = $this->createProject();

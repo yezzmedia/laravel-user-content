@@ -22,7 +22,6 @@ use YezzMedia\Dashboard\DashboardServiceProvider;
 use YezzMedia\Foundation\FoundationServiceProvider;
 use YezzMedia\Foundation\Testing\FoundationTestCase;
 use YezzMedia\UserProjects\Models\Project;
-use YezzMedia\UserProjects\Models\ProjectMember;
 use YezzMedia\UserProjects\UserProjectsServiceProvider;
 
 abstract class TestCase extends FoundationTestCase

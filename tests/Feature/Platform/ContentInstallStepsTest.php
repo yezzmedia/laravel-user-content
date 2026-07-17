@@ -6,7 +6,6 @@ use YezzMedia\Content\ContentPlatformPackage;
 use YezzMedia\Content\Install\EnsureContentStoreReadyInstallStep;
 use YezzMedia\Content\Install\PublishContentConfigInstallStep;
 use YezzMedia\Content\Install\PublishContentMigrationsInstallStep;
-use YezzMedia\Foundation\Install\InstallContext;
 
 it('has correct keys on install steps', function () {
     $steps = (new ContentPlatformPackage)->installSteps();

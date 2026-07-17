@@ -5,7 +5,6 @@ declare(strict_types=1);
 use YezzMedia\Content\Events\PageSlugChanged;
 use YezzMedia\Content\Listeners\CreateRedirectOnSlugChange;
 use YezzMedia\Content\Models\Redirect;
-use YezzMedia\UserProjects\Models\Project;
 
 it('creates redirect on slug change', function () {
     $project = $this->createProject();

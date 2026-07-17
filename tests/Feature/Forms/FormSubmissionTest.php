@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 use YezzMedia\Content\Models\FormDefinition;
 use YezzMedia\Content\Models\FormSubmission;
-use YezzMedia\UserProjects\Models\Project;
 
 it('stores a submission', function () {
     $project = $this->createProject();

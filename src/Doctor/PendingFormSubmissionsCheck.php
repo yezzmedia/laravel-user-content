@@ -6,12 +6,13 @@ namespace YezzMedia\Content\Doctor;
 
 use Throwable;
 use YezzMedia\Content\Support\ContentStoreSetup;
-use YezzMedia\Foundation\Doctor\DoctorCheck;
 use YezzMedia\Foundation\Data\DoctorResult;
+use YezzMedia\Foundation\Doctor\DoctorCheck;
 
 final readonly class PendingFormSubmissionsCheck implements DoctorCheck
 {
     private const KEY = 'content_pending_form_submissions';
+
     private const PACKAGE = 'yezzmedia/laravel-user-content';
 
     public function __construct(private ContentStoreSetup $setup) {}

@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 use YezzMedia\Content\Enums\PageStatus;
 use YezzMedia\Content\Models\Page;
-use YezzMedia\UserProjects\Models\Project;
 
 it('creates a page', function () {
     $project = $this->createProject();

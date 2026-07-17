@@ -5,6 +5,9 @@ declare(strict_types=1);
 namespace YezzMedia\Content\Support;
 
 use Illuminate\Support\Facades\Schema;
+use YezzMedia\Content\Models\FormSubmission;
+use YezzMedia\Content\Models\Page;
+use YezzMedia\Content\Models\Redirect;
 
 class ContentStoreSetup
 {
@@ -73,11 +76,11 @@ class ContentStoreSetup
             return [];
         }
 
-        $redirects = \YezzMedia\Content\Models\Redirect::enabled()->get();
+        $redirects = Redirect::enabled()->get();
 
         return $redirects->filter(function ($redirect) {
             $slug = ltrim($redirect->target, '/');
-            $page = \YezzMedia\Content\Models\Page::bySlug($slug)->first();
+            $page = Page::bySlug($slug)->first();
 
             return $page === null || ! $page->isPublished();
         })->values()->all();
@@ -89,7 +92,7 @@ class ContentStoreSetup
             return 0;
         }
 
-        return \YezzMedia\Content\Models\FormSubmission::where('is_spam', false)
+        return FormSubmission::where('is_spam', false)
             ->where('created_at', '>=', now()->subDays(7))
             ->count();
     }

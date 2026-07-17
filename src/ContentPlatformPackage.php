@@ -22,16 +22,8 @@ use YezzMedia\Foundation\Data\FeatureDefinition;
 use YezzMedia\Foundation\Data\PackageMetadata;
 use YezzMedia\Foundation\Data\PermissionDefinition;
 use YezzMedia\Foundation\Data\RateLimitDefinition;
-use YezzMedia\Foundation\Install\InstallStep;
 
-final class ContentPlatformPackage implements
-    DefinesAuditEvents,
-    DefinesInstallSteps,
-    DefinesPermissions,
-    DefinesRateLimiters,
-    PlatformPackage,
-    ProvidesDoctorChecks,
-    RegistersFeatures
+final class ContentPlatformPackage implements DefinesAuditEvents, DefinesInstallSteps, DefinesPermissions, DefinesRateLimiters, PlatformPackage, ProvidesDoctorChecks, RegistersFeatures
 {
     public function metadata(): PackageMetadata
     {

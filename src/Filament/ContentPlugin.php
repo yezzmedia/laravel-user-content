@@ -6,6 +6,10 @@ namespace YezzMedia\Content\Filament;
 
 use Filament\Contracts\Plugin;
 use Filament\Panel;
+use YezzMedia\Content\Pages\FormsOverviewPage;
+use YezzMedia\Content\Pages\NavigationOverviewPage;
+use YezzMedia\Content\Pages\PagesOverviewPage;
+use YezzMedia\Content\Pages\RedirectsOverviewPage;
 
 final class ContentPlugin implements Plugin
 {
@@ -17,10 +21,10 @@ final class ContentPlugin implements Plugin
     public function register(Panel $panel): void
     {
         $panel->pages([
-            \YezzMedia\Content\Pages\PagesOverviewPage::class,
-            \YezzMedia\Content\Pages\NavigationOverviewPage::class,
-            \YezzMedia\Content\Pages\RedirectsOverviewPage::class,
-            \YezzMedia\Content\Pages\FormsOverviewPage::class,
+            PagesOverviewPage::class,
+            NavigationOverviewPage::class,
+            RedirectsOverviewPage::class,
+            FormsOverviewPage::class,
         ]);
     }
 

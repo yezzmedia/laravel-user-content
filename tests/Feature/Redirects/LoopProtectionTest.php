@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 use YezzMedia\Content\Actions\ProtectAgainstRedirectLoopsAction;
 use YezzMedia\Content\Models\Redirect;
-use YezzMedia\UserProjects\Models\Project;
 
 it('rejects self-referential redirect', function () {
     $project = $this->createProject();

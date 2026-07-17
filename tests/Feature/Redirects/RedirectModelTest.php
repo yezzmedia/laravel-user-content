@@ -3,7 +3,6 @@
 declare(strict_types=1);
 
 use YezzMedia\Content\Models\Redirect;
-use YezzMedia\UserProjects\Models\Project;
 
 it('creates a redirect', function () {
     $project = $this->createProject();

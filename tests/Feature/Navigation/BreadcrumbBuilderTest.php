@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 use YezzMedia\Content\Builders\BreadcrumbBuilder;
 use YezzMedia\Content\Models\Page;
-use YezzMedia\UserProjects\Models\Project;
 
 it('builds breadcrumbs for root page', function () {
     $project = $this->createProject();

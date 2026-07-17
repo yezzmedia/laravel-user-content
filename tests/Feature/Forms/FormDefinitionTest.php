@@ -3,7 +3,6 @@
 declare(strict_types=1);
 
 use YezzMedia\Content\Models\FormDefinition;
-use YezzMedia\UserProjects\Models\Project;
 
 it('creates a form definition', function () {
     $project = $this->createProject();

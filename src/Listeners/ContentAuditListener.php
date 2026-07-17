@@ -8,6 +8,7 @@ use Throwable;
 use YezzMedia\Content\Events\PagePublished;
 use YezzMedia\Content\Events\PageSlugChanged;
 use YezzMedia\Content\Events\PageUnpublished;
+use YezzMedia\Content\Models\Page;
 
 final class ContentAuditListener
 {
@@ -17,7 +18,7 @@ final class ContentAuditListener
             activity()
                 ->event('published')
                 ->performedOn(
-                    \YezzMedia\Content\Models\Page::find($event->pageId),
+                    Page::find($event->pageId),
                 )
                 ->withProperties([
                     'project_id' => $event->projectId,
