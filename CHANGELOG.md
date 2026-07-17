@@ -1,5 +1,13 @@
 # Changelog
 
+## v0.1.2 (2026-07-17)
+
+- Redesign forms-overview, navigation-overview, pages-overview, and redirects-overview backend views
+- Add frontend page renderer (page.blade.php) for public content display
+- Add PageController with page rendering and project context resolution
+- Add PageUrlResolver for content page URL resolution
+- Wire content pages into service provider and addon registrar
+
 ## v0.1.1 (2026-07-02)
 
 - Register content addons with InstalledAddonRegistry on boot

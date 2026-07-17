@@ -3,6 +3,7 @@
     "description": "Customer-managed pages, navigation, redirects, and forms for Yezz Media customer projects.",
     "type": "library",
     "license": "MIT",
+    "version": "0.1.2",
     "require": {
         "php": "^8.3",
         "yezzmedia/laravel-foundation": "^0.2",
